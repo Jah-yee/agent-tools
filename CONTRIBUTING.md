@@ -31,6 +31,24 @@ Thank you for your interest in contributing! This project is part of the [GitTen
 5. **Write a clear PR description.** Explain what changed and why. Reference the issue number.
 6. **Keep commits clean.** Squash WIP commits. Use clear commit messages.
 
+### Immutable PR Policy
+
+**PRs are reviewed exactly once, as submitted. This is non-negotiable.**
+
+- When you open a PR, that snapshot is what gets reviewed — merge or close, no middle ground.
+- **Any additional commits pushed after opening will auto-close your PR.**
+- There is no back-and-forth iteration. No "can you fix this one thing." If the PR isn't ready, it gets closed.
+- To iterate: close the old PR, fix your code, open a new one.
+
+**Why?** This keeps reviews fast, fair, and honest. It forces you to test thoroughly before submitting. It prevents gaming through incremental fixes. Ship it right or ship it again.
+
+**Before you open your PR, make sure:**
+- All tests pass (`npm test`)
+- Types check (`npm run typecheck`)
+- Build succeeds (`npm run build`)
+- You've manually verified your code works
+- Your PR description is complete
+
 ## Code Style
 
 - TypeScript with strict mode

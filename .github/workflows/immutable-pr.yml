@@ -1,0 +1,53 @@
+name: Immutable PR Policy
+
+on:
+  pull_request:
+    types: [synchronize]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  close-updated-pr:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Close PR with additional commits
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const pr = context.payload.pull_request;
+
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: pr.number,
+              body: [
+                '## PR Closed — Immutable Contribution Policy',
+                '',
+                'This PR was automatically closed because new commits were pushed after the initial submission.',
+                '',
+                '**Our policy:** PRs are reviewed exactly once, as submitted. No additional commits, force-pushes, or amendments are allowed after opening.',
+                '',
+                'If you want to iterate on your changes:',
+                '1. Close this PR (if not already closed)',
+                '2. Make your changes on a new branch',
+                '3. Open a fresh PR',
+                '',
+                'This keeps the review process clean and fair for all contributors. See [CONTRIBUTING.md](../blob/main/CONTRIBUTING.md#immutable-pr-policy) for details.',
+              ].join('\n'),
+            });
+
+            await github.rest.pulls.update({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: pr.number,
+              state: 'closed',
+            });
+
+            await github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: pr.number,
+              labels: ['closed: immutable-policy'],
+            });
